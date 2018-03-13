@@ -1,16 +1,13 @@
 function [ A, labels ] = regions2adjacency( clusteredGrid )
 
-minValue = min( min( clusteredGrid ) );
-clusteredGrid = clusteredGrid - minValue + 1;
+if isa(clusteredGrid,'GRIDobj')
+    clusteredGrid = clusteredGrid.Z;
+end
 
-clusteredGrid = int64(clusteredGrid);
 [ nrows, ncols ] = size( clusteredGrid );
 
-N = length( unique( clusteredGrid ) );
-
-map = containers.Map( unique(clusteredGrid), 1:N );
-
-clusteredGrid = arrayfun( @(x) map(x), clusteredGrid ) ;
+labels = unique( clusteredGrid( ~isnan( clusteredGrid ) ) );
+N = length( labels );
 
 A = zeros( N );
 
@@ -20,6 +17,10 @@ for i=1:nrows
     for j=1:ncols-1
         left = clusteredGrid( i, j );
         right = clusteredGrid( i, j+1 );
+        if any(isnan([left right]))
+            continue
+        end
+        
         if left ~= right
             A( left, right ) = 1;
             A( right, left ) = 1;
@@ -32,6 +33,11 @@ for i=1:ncols
     for j=1:nrows-1
         upper = clusteredGrid( j, i);
         lower = clusteredGrid( j+1, i );
+        
+        if any(isnan([upper lower]))
+            continue
+        end
+        
         if upper ~= lower
             A( upper, lower ) = 1;
             A( lower, upper ) = 1;
@@ -39,7 +45,7 @@ for i=1:ncols
     end
 end
 
-labels = map.keys;
+% labels = map.keys;
 
 end
 

@@ -1,4 +1,4 @@
-function [L,R] = labelgrid(DEM,varargin)
+function [L,RR] = labelgrid(DEM,varargin)
 
 %LABELGRID landscape segmentation
 
@@ -26,9 +26,11 @@ L.Z(isnan(DEM.Z)) = 0;
 
 IX = streampoi(S,{'confl','outlet'},'ix');
 D  = drainagebasins(FD,IX);
-[~,~,ix] = unique([L.Z(:),D.Z(:)],'rows');
+[~,~,ix] = unique([L.Z(~isnan(DEM.Z)),D.Z(~isnan(DEM.Z))],'rows');
+
 R  = GRIDobj(L);
-R.Z = reshape(ix,R.size);
+R.Z(~isnan(DEM.Z)) = ix;
+
 
 s  = streamorder(S);
 % maximum stream order
@@ -51,7 +53,20 @@ for r = 1:maxs
     end
 end
 
+
+[~,~,ix] = unique(R.Z(~isnan(DEM.Z)));
+R.Z(~isnan(DEM.Z)) = ix;
+
+RR = GRIDobj(R);
+counter = 0;
+for r = 1:max(R)
+    [LL,num] = bwlabel(R.Z==r,8);  
+    LL(LL~=0) = LL(LL~=0)+counter;
+    counter  = counter + num;
+    RR.Z(LL~=0) = LL(LL~=0);
+end
+
 L.Z(isnan(DEM.Z)) = nan;
-R.Z(isnan(DEM.Z)) = nan;
+RR.Z(isnan(DEM.Z)) = nan;
     
 
