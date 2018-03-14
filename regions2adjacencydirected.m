@@ -14,7 +14,6 @@ clusterin(I) = [];
 labels = unique( clusteredGrid( ~isnan( clusteredGrid ) ) );
 N = length( labels );
 
-A = zeros( N );
-
-ix = sub2ind(size(A),clusterout,clusterin);
-A(ix) = 1;
+A = accumarray([clusterout clusterin],ones(size(clusterout)),[N N],@sum);
+A = A./sum(A,2);
+A(isnan(A)) = 0;
