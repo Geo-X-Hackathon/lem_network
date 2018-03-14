@@ -1,0 +1,6 @@
+1	Hillslopes (<20%)
+2	Hillslopes (>20%)
+3	Fluvial (1st order)
+4	Fluvial (2nd order)
+5	Fluvial (3rd order)
+6	Fluvial (4th order)
