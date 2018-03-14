@@ -33,4 +33,7 @@ imagesc(map_rMIN_tSTD)
 
 %%  zonal statistic: STDEV area       time aggregation: STDEV
 [stat_rSTD_tSTD, stat_rSTD_perslice, regionids]  = getstats( datacube, regions, @std, @std);
+% %write statistics in file:
+dlmwrite('stat_rSTD_tSTD.csv',stat_rMIN_tSTD)
+dlmwrite('stat_rSTD__perslice.csv',stat_rMIN_perslice)
 
