@@ -21,8 +21,8 @@ disp('Calculating statistics')
 
 [stat_rMIN_tSTD, stat_rMIN_perslice, regionids]  = getstats( datacube, regions, @min, @std);
 % %write statistics in file:
-dlmwrite('stat_rMIN_tSTD.tsv',stat_rMIN_tSTD)
-dlmwrite('stat_rMIN__perslice.tsv',stat_rMIN_perslice)
+dlmwrite('stat_rMIN_tSTD.csv',stat_rMIN_tSTD)
+dlmwrite('stat_rMIN__perslice.csv',stat_rMIN_perslice)
 
 % Create GRIDobj output for MAP:
 map_rMIN_tSTD = regionsGO;
