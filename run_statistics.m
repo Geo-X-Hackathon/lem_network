@@ -25,15 +25,19 @@ dlmwrite('stat_rMIN_tSTD.csv',stat_rMIN_tSTD)
 dlmwrite('stat_rMIN__perslice.csv',stat_rMIN_perslice)
 
 % Create GRIDobj output for MAP:
-map_rMIN_tSTD = regionsGO;
+map_rMIN_tSTD = DEM; map_rMIN_tSTD.Z = regions;
 map_rMIN_tSTD.Z = changem(map_rMIN_tSTD.Z, stat_rMIN_tSTD, regionids);
 
 % show map:
-imagesc(map_rMIN_tSTD)
+imageschs(DEM,map_rMIN_tSTD)
 
 %%  zonal statistic: STDEV area       time aggregation: STDEV
 [stat_rSTD_tSTD, stat_rSTD_perslice, regionids]  = getstats( datacube, regions, @std, @std);
 % %write statistics in file:
-dlmwrite('stat_rSTD_tSTD.csv',stat_rMIN_tSTD)
-dlmwrite('stat_rSTD__perslice.csv',stat_rMIN_perslice)
+dlmwrite('stat_rSTD_tSTD.csv',stat_rSTD_tSTD)
+dlmwrite('stat_rSTD__perslice.csv',stat_rSTD_perslice)
+
+map_rSTD_tSTD = DEM; map_rSTD_tSTD.Z = regions;
+map_rSTD_tSTD.Z = changem(map_rSTD_tSTD.Z, stat_rMIN_tSTD, regionids);
+imageschs(DEM,map_rSTD_tSTD)
 
